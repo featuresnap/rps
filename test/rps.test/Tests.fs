@@ -37,8 +37,8 @@ let ``Random strategy yields each value about a third of the time`` () =
 
 [<Fact>]
 let ``TFT strategy repeats previous move of opponent`` () =
-    let history =  seq [{P1=Rock; P2=Scissors}]
-    let strategy = TitForTat P1 history
+    let history =  seq [{P1=Rock; P2=Scissors}, Victor P1]
+    let strategy = TitForTat P1 
     let nextMove = strategy(history) 
     Assert.Equal(Rock, nextMove)
     

@@ -21,7 +21,7 @@ module Core =
         | Victor of Player
         | Draw
 
-    type History = seq<Match>
+    type History = seq<Match * Result>
 
     type Strategy = History -> Move
     let Always x : Strategy = fun (history) -> x
@@ -36,11 +36,12 @@ module Core =
         
                
 
-    let TitForTat player history : Strategy =
+    let TitForTat player : Strategy =
         let moveOf p m = match p with |P1 -> m.P1 |P2 -> m.P2
         fun (history) -> 
             history
             |> Seq.tryHead
+            |> Option.map fst
             |> Option.defaultValue {P1=Rock; P2=Rock}
             |> moveOf player
 

@@ -9,8 +9,9 @@ module game =
         let rec play' (s1:Strategy) (s2:Strategy) history = seq {
             let hseq = history |> Seq.ofList
             let moves = {P1=s1(hseq); P2=s2(hseq)}
-            yield moves |> outcome
-            yield! play' s1 s2 (moves::history)
+            let result = moves |> outcome
+            yield result
+            yield! play' s1 s2 ((moves, result)::history)
         }
 
         play' s1 s2 history
