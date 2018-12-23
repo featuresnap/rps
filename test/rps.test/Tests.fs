@@ -59,6 +59,17 @@ let ``TFT strategy repeats a random sequence`` () =
     let comparison = Seq.zip opponentMoves myResponses
     Assert.True(comparison |> Seq.forall (fun (opp, rsp) -> rsp = opp))
 
+[<Fact>]
+let ``BeatOpponentsLastMove strategy plays the move that would have beaten the opponent last time`` () = 
+    let opponentStrategy = RandomStrategy
+    let myStrategy = BeatOpponentsLastMove P2
+    let result = play opponentStrategy myStrategy |> Seq.take 10 |> List.ofSeq
+    let opponentMoves = result |> Seq.map (moveOf P1) 
+    let myResponses = result |> Seq.map (moveOf P2) |> Seq.tail
+    let comparison = Seq.zip opponentMoves myResponses
+    comparison |> Seq.iter (fun (opp, rsp) -> rsp |> testBeats opp)
+
+
 
     
     
